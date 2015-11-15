@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, jQuery, alert, lunr, Search, DOCUMENTATION_OPTIONS*/
+/*global $, lunr, Search, DOCUMENTATION_OPTIONS*/
 (function () {
     "use strict";
 

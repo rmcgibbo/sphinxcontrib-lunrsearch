@@ -119,7 +119,6 @@ var Search = {
 
     handleKeyboardNavigation : function(self, keycode) {
         "use strict";
-        console.log(keycode);
 
         var ul = $('#ls_search-results');
         var active = $(ul.find('li a.hover')[0])

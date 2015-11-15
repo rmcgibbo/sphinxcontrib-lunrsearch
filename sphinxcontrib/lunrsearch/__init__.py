@@ -11,6 +11,8 @@ EXT_ROOT = os.path.dirname(__file__)
 class IndexBuilder(sphinx.search.IndexBuilder):
     def freeze(self):
         """Create a usable data structure for serializing."""
+        data = super(IndexBuilder, self).freeze()
+
         filenames, titles = zip(*sorted(self._titles.items()))
         fn2index = dict((f, i) for (i, f) in enumerate(filenames))
 
@@ -30,7 +32,8 @@ class IndexBuilder(sphinx.search.IndexBuilder):
                     'name': name,
                 }
 
-        return {'store': store}
+        data.update({'store': store})
+        return data
 
 
 def add_templates(app):

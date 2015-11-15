@@ -2,9 +2,11 @@ var Search = {
     store : null,
     index : null,
 
-
     init : function() {
         "use strict";
+
+        this.highlight = $("#ls_lunrsearch-highlight").value === "true";
+
         $.ajax({
             url: $("#ls_search-index-url").val(),
             data: null, dataType: "script", cache: true,
@@ -37,10 +39,12 @@ var Search = {
         this.initSearchCallbacks(this);
     },
 
-    buildHref : function(s) {
+    buildHref : function(self, s) {
+        var highlightstring = self.highlight ? '?highlight=' + $.urlencode(s.name) : "";
+
         return DOCUMENTATION_OPTIONS.URL_ROOT + s.filename +
                DOCUMENTATION_OPTIONS.FILE_SUFFIX +
-               '?highlight=' + $.urlencode(s.name) +
+               highlightstring +
                '#' + s.prefix + '.' + s.name;
     }, // buildHref
 
@@ -79,7 +83,7 @@ var Search = {
 
             var el = $('<li>')
                 .append($('<a>')
-                    .attr('href', self.buildHref(s))
+                    .attr('href', self.buildHref(self, s))
                     .text(prefix + s.name)
                     .mouseenter(function() {
                         ul.find('li a').removeClass('hover');

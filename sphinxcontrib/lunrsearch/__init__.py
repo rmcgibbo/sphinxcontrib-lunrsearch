@@ -1,4 +1,5 @@
 import os
+import json
 import itertools
 
 from six import iteritems
@@ -36,9 +37,11 @@ class IndexBuilder(sphinx.search.IndexBuilder):
         return data
 
 
-def add_templates(app):
+def builder_inited(app):
     app.builder.templates.loaders.insert(0, SphinxFileSystemLoader(EXT_ROOT))
-
+    app.config.html_context.update({
+        'lunrsearch_highlight': json.dumps(bool(app.config.lunrsearch_highlight))
+    })
 
 def copy_static_files(app, exc):
     files = ['js/searchbox.js', 'css/searchbox.css']
@@ -51,14 +54,11 @@ def copy_static_files(app, exc):
 
 
 def setup(app):
-    setup.app = app
-    setup.config = app.config
-    setup.confdir = app.confdir
-
     app.add_javascript('js/searchbox.js')
     app.add_stylesheet('css/searchbox.css')
     app.add_javascript('https://cdnjs.cloudflare.com/ajax/libs/lunr.js/0.6.0/lunr.min.js')
-    app.connect('builder-inited', add_templates)
+    app.connect('builder-inited', builder_inited)
     app.connect('build-finished', copy_static_files)
+    app.add_config_value('lunrsearch_highlight', True, 'html')
 
     sphinx.search.IndexBuilder = IndexBuilder

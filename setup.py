@@ -1,9 +1,6 @@
 """sphinxcontrib-lunrsearch
 
 Better live search for Sphinx API docs using lunr.js.
-
-To use, add 'sphinxcontrib.lunrsearch' to the list of extensions in your
-sphinx ``conf.py`` file.
 """
 
 import sys

@@ -1,11 +1,10 @@
-"""sphinxcontrib-lunrsearch
-
-Better live search for Sphinx API docs using lunr.js.
-"""
-
+import io
 import sys
 from setuptools import setup, find_packages
-DOCLINES = __doc__.split("\n")
+
+def readfile(filename):
+    with io.open(filename, encoding="utf-8") as stream:
+        return stream.read().splitlines()
 
 setup(
     name='sphinxcontrib-lunrsearch',
@@ -14,8 +13,8 @@ setup(
     license="MIT",
     author="Robert T. McGibbon",
     author_email="rmcgibbo@gmail.com",
-    description=DOCLINES[0],
-    long_description="\n".join(DOCLINES[2:]),
+    description="Instant search for Sphinx",
+    long_description='\n'.join(readfile("README.rst")[3:]),
     zip_safe=False,
     classifiers=[
         'Development Status :: 3 - Alpha',

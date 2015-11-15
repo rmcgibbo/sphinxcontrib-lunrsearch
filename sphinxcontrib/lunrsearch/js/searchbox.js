@@ -6,7 +6,7 @@ var Search = {
     init : function() {
         "use strict";
         $.ajax({
-            url: $("#ls_search-index-url").val();
+            url: $("#ls_search-index-url").val(),
             data: null, dataType: "script", cache: true,
             complete: function(jqxhr, textstatus) {
               if (textstatus != "success") {
@@ -96,7 +96,7 @@ var Search = {
     initSearchCallbacks : function(self) {
         "use strict";
         $("#ls_search-field")
-            .keyup(function(event) {self.onKeyUp(self, event)});
+            .keyup(function(event) {self.onKeyUp(self, event)})
             .keypress(function(event) {
                 if (event.keyCode === 13) {
                     event.preventDefault();

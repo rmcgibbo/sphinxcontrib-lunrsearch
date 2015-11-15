@@ -38,12 +38,22 @@ class IndexBuilder(sphinx.search.IndexBuilder):
 
 
 def builder_inited(app):
+    # adding a new loader to the template system puts our searchbox.html
+    # template in front of the others, it overrides whatever searchbox.html
+    # the current theme is using.
+    # it's still up to the theme to actually _use_ a file called searchbox.html
+    # somewhere in its layout. but the base theme and pretty much everything
+    # else that inherits from it uses this filename.
     app.builder.templates.loaders.insert(0, SphinxFileSystemLoader(EXT_ROOT))
+
+    # adds the variable to the context used when rendering the searchbox.html
     app.config.html_context.update({
         'lunrsearch_highlight': json.dumps(bool(app.config.lunrsearch_highlight))
     })
 
 def copy_static_files(app, exc):
+    # because we're using the extension system instead of the theme system,
+    # it's our responsibility to copy over static files outselves.
     files = ['js/searchbox.js', 'css/searchbox.css']
     for f in files:
         src = os.path.join(EXT_ROOT, f)
@@ -54,9 +64,12 @@ def copy_static_files(app, exc):
 
 
 def setup(app):
+    # adds <script> and <link> to each of the generated pages to load these
+    # files.
     app.add_javascript('js/searchbox.js')
     app.add_stylesheet('css/searchbox.css')
     app.add_javascript('https://cdnjs.cloudflare.com/ajax/libs/lunr.js/0.6.0/lunr.min.js')
+
     app.connect('builder-inited', builder_inited)
     app.connect('build-finished', copy_static_files)
     app.add_config_value('lunrsearch_highlight', True, 'html')

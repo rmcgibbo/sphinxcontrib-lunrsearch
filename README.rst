@@ -1,6 +1,6 @@
-========================================================
-sphinxcontrib-lunrsearch -- Better API search for Sphinx
-========================================================
+========================
+sphinxcontrib-lunrsearch
+========================
 
 This extension modifies the search box in Sphinx documentation
 to show real-time results as you type. It's particularly suited for

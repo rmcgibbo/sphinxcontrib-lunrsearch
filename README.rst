@@ -17,3 +17,9 @@ The following options can be set in conf.py:
 
   Whether to highlight the seach term after navigating to a results.
   The default is ``False``.
+
+Example
+-------
+
+.. image:: http://i.giphy.com/3o85xmqkbt14LuRcZO.gif
+  

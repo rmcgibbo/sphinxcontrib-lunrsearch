@@ -40,8 +40,11 @@ def add_templates(app):
 def copy_static_files(app, exc):
     files = ['js/searchbox.js', 'css/searchbox.css']
     for f in files:
-        abspath = os.path.join(EXT_ROOT, f)
-        copyfile(abspath, os.path.join(app.outdir, '_static', f))
+        src = os.path.join(EXT_ROOT, f)
+        dest = os.path.join(app.outdir, '_static', f)
+        if not os.path.exists(os.path.dirname(dest)):
+            os.makedirs(os.path.dirname(dest))
+        copyfile(src, dest)
 
 
 def setup(app):

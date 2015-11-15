@@ -2,14 +2,15 @@ var Search = {
     store : null,
     index : null,
 
+
     init : function() {
         "use strict";
         $.ajax({
-            url: "searchindex.js",
+            url: $("#ls_search-index-url").val();
             data: null, dataType: "script", cache: true,
             complete: function(jqxhr, textstatus) {
               if (textstatus != "success") {
-                document.getElementById("lunrsearchindexloader").src = "searchindex.js";
+                document.getElementById("lunrsearchindexloader").src = $("#ls_search-index-url").val();
               }
             }
         });
@@ -55,13 +56,13 @@ var Search = {
             return this.handleKeyboardNavigation(self, keycode);
         }
 
-        var query = $('.search-field').val();
+        var query = $("#ls_search-field").val();
+        var ul = $('#ls_search-results');
+
         if (query === '') {
-            $('.results').empty().hide();
+            ul.empty().hide();
             return;
         }
-
-        var ul = $('.results');
         var results = self.index.search(query);
         ul.show();
 
@@ -94,26 +95,24 @@ var Search = {
 
     initSearchCallbacks : function(self) {
         "use strict";
-
-        $('.search-field').keyup(function(event) {self.onKeyUp(self, event)});
-        $('.search-field').keypress(function(event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                var active = $('.results li a.hover')[0];
-                active.click();
-            }
-        });
-
-        $('.search-field').focusout(function(){
-            // http://stackoverflow.com/a/13980492/1079728
-            window.setTimeout(function() {
-                $('.results').hide();
-            }, 100);
-        });
-
-        $('.search-field').focusin(function(){
-            if ($('.results li').length > 0)
-                $('.results').show();
+        $("#ls_search-field")
+            .keyup(function(event) {self.onKeyUp(self, event)});
+            .keypress(function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    var active = $('#ls_search-results li a.hover')[0];
+                    active.click();
+                }
+            })
+            .focusout(function(){
+                // http://stackoverflow.com/a/13980492/1079728
+                window.setTimeout(function() {
+                    $('.results').hide();
+                }, 100);
+            })
+            .focusin(function(){
+            if ($('#ls_search-results li').length > 0)
+                $('#ls_search-results').show();
         });
 
     }, // end initSearchCallbacks
@@ -122,7 +121,7 @@ var Search = {
         "use strict";
         console.log(keycode);
 
-        var ul = $('.results');
+        var ul = $('#ls_search-results');
         var active = $(ul.find('li a.hover')[0])
 
         if (keycode === 40) {

@@ -1,9 +1,11 @@
 <script src="{{ pathto('_static/js/searchbox.js', 1) }}" type="text/javascript"></script>
 <script type="text/javascript" id="lunrsearchindexloader"></script>
 
-<form class="wy-form search" action="" method="get">
+
+<form class="search" action="" method="get">
   <input type="hidden" name="check_keywords" value="yes" />
   <input type="hidden" name="area" value="default" />
-  <input type="text" class="search-field" name="q" placeholder="Search API" />
-  <ul class="results"></ul>
+  <input type="hidden" id="ls_search-index-url" value="{{ pathto('searchindex.js', 1) }}"/>
+  <input type="text" class="search-field" id="ls_search-field" name="q" placeholder="Search API" />
+  <ul class="results" id="ls_search-results"></ul>
 </form>

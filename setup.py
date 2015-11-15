@@ -1,11 +1,9 @@
-"""MDTraj: A modern, open library for the analysis of molecular dynamics trajectories
+"""sphinxcontrib-lunrsearch
 
-MDTraj is a python library that allows users to manipulate molecular dynamics
-(MD) trajectories and perform a variety of analyses, including fast RMSD,
-solvent accessible surface area, hydrogen bonding, etc. A highlight of MDTraj
-is the wide variety of molecular dynamics trajectory file formats which are
-supported, including RCSB pdb, GROMACS xtc and trr, CHARMM / NAMD dcd, AMBER
-binpos, AMBER NetCDF, AMBER mdcrd, TINKER arc and MDTraj HDF5.
+Better live search for Sphinx API docs using lunr.js.
+
+To use, add 'sphinxcontrib.lunrsearch' to the list of extensions in your
+sphinx ``conf.py`` file.
 """
 
 import sys

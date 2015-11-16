@@ -1,6 +1,16 @@
 /*jslint browser: true*/
 /*global $, lunr, Search, DOCUMENTATION_OPTIONS*/
-(function ($, lunr, Search, DOCUMENTATION_OPTIONS) {
+
+(function () {
+    "use strict";
+
+$.fn.textWidth = function(text, font) {
+    if (!$.fn.textWidth.fakeEl) $.fn.textWidth.fakeEl = $('<span>').hide().appendTo(document.body);
+    $.fn.textWidth.fakeEl.text(text || this.val() || this.text()).css('font', font || this.css('font'));
+    return $.fn.textWidth.fakeEl.width();
+};
+
+var searchModule = (function ($, lunr, Search, DOCUMENTATION_OPTIONS) {
     "use strict";
 
     var store = Search.store,
@@ -75,8 +85,14 @@
         for (i = 0; i < Math.min(results.length, 5); i += 1) {
             ul.append(createResultListElement(store[results[i].ref]));
         }
-    }  // end onKeyUp
+        ul.width(Math.max(
+            $('#ls_search-field').outerWidth(),
+            Math.max.apply(null, ul.children().map(function(i, o) {
+                return $(o).textWidth();
+            })) + 20
+        ));
 
+    }  // end onKeyUp
 
     function handleKeyboardNavigation(keycode) {
         var ul = $('#ls_search-results'),
@@ -106,7 +122,6 @@
                '#' + s.prefix + '.' + s.name;
     } // end buildHref
 
-
     function createResultListElement(s) {
         var prefix = (s.objtype === "py:method") ? (s.last_prefix + ".") : "",
             ul = $('#ls_search-results');
@@ -124,6 +139,10 @@
                 })
                 );
     } // end createResultListElement
+});
 
-}($, lunr, Search, DOCUMENTATION_OPTIONS));
-// Search.store is a global that's in searchbox.html
+window.onload = function() {
+    searchModule($, lunr, Search, DOCUMENTATION_OPTIONS);
+};
+
+}());

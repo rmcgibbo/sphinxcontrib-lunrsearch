@@ -51,7 +51,8 @@ def builder_inited(app):
         'lunrsearch_highlight': json.dumps(bool(app.config.lunrsearch_highlight))
     })
 
-def copy_static_files(app, exc):
+
+def copy_static_files(app, _):
     # because we're using the extension system instead of the theme system,
     # it's our responsibility to copy over static files outselves.
     files = ['js/searchbox.js', 'css/searchbox.css']

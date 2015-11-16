@@ -1,6 +1,6 @@
 import io
-import sys
 from setuptools import setup, find_packages
+
 
 def readfile(filename):
     with io.open(filename, encoding="utf-8") as stream:

@@ -1,60 +1,49 @@
 /*jslint browser: true*/
-/*global $, jQuery, alert, lunr, Search, DOCUMENTATION_OPTIONS*/
-(function () {
+/*global $, lunr, Search, DOCUMENTATION_OPTIONS*/
+(function ($, lunr, Search, DOCUMENTATION_OPTIONS) {
     "use strict";
 
-    var store = null,
+    var store = Search.store,
         index = null,
-        highlight = null;
-
-    function init() {
-        var id = null;
-
-        // Search.store is a global that's set before the window load
-        // in searchbox.html
-        store = Search.store;
         highlight = $("#ls_lunrsearch-highlight").value === "true";
 
-        lunr.tokenizer.seperator = '.';
-        index = lunr(function () {
-            this.field('prefix');
-            this.field('name', { boost: 10 });
-            this.ref('id');
+    lunr.tokenizer.seperator = '.';
+    index = lunr(function () {
+        this.field('prefix');
+        this.field('name', { boost: 10 });
+        this.ref('id');
+    });
+
+    $.each(store, function (id, value) {
+        index.add({
+            id: id,
+            name: value.name,
+            prefix: value.prefix
         });
+    });
 
-        for (id in store) {
-            if (store.hasOwnProperty(id)) {
-                index.add({
-                    id: id,
-                    name: store[id].name,
-                    prefix: store[id].prefix,
-                });
+    $("#ls_search-field")
+        .keyup(function (event) {
+            onKeyUp(event);
+        })
+        .keypress(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                var active = $('#ls_search-results li a.hover')[0];
+                active.click();
             }
-        }
-
-        $("#ls_search-field")
-            .keyup(function (event) {
-                onKeyUp(event);
-            })
-            .keypress(function (event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                    var active = $('#ls_search-results li a.hover')[0];
-                    active.click();
-                }
-            })
-            .focusout(function () {
-                // http://stackoverflow.com/a/13980492/1079728
-                window.setTimeout(function () {
-                    $('.results').hide();
-                }, 100);
-            })
-            .focusin(function () {
-                if ($('#ls_search-results li').length > 0) {
-                    $('#ls_search-results').show();
-                }
-            });
-    } // end init
+        })
+        .focusout(function () {
+            // http://stackoverflow.com/a/13980492/1079728
+            window.setTimeout(function () {
+                $('.results').hide();
+            }, 100);
+        })
+        .focusin(function () {
+            if ($('#ls_search-results li').length > 0) {
+                $('#ls_search-results').show();
+            }
+        });
 
     function onKeyUp(event) {
         var keycode = event.keyCode || event.which,
@@ -136,7 +125,5 @@
                 );
     } // end createResultListElement
 
-    window.onload = function () {
-        init();
-    };
-}());
+}($, lunr, Search, DOCUMENTATION_OPTIONS));
+// Search.store is a global that's in searchbox.html

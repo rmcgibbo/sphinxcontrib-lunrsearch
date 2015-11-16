@@ -1,4 +1,5 @@
 import os
+from os.path import dirname, join, exists
 import json
 import itertools
 
@@ -6,7 +7,6 @@ from six import iteritems
 import sphinx.search
 from sphinx.util.osutil import copyfile
 from sphinx.jinja2glue import SphinxFileSystemLoader
-EXT_ROOT = os.path.dirname(__file__)
 
 
 class IndexBuilder(sphinx.search.IndexBuilder):
@@ -44,7 +44,7 @@ def builder_inited(app):
     # it's still up to the theme to actually _use_ a file called searchbox.html
     # somewhere in its layout. but the base theme and pretty much everything
     # else that inherits from it uses this filename.
-    app.builder.templates.loaders.insert(0, SphinxFileSystemLoader(EXT_ROOT))
+    app.builder.templates.loaders.insert(0, SphinxFileSystemLoader(dirname(__file__)))
 
     # adds the variable to the context used when rendering the searchbox.html
     app.config.html_context.update({
@@ -56,10 +56,10 @@ def copy_static_files(app, exc):
     # it's our responsibility to copy over static files outselves.
     files = ['js/searchbox.js', 'css/searchbox.css']
     for f in files:
-        src = os.path.join(EXT_ROOT, f)
-        dest = os.path.join(app.outdir, '_static', f)
-        if not os.path.exists(os.path.dirname(dest)):
-            os.makedirs(os.path.dirname(dest))
+        src = join(dirname(__file__), f)
+        dest = join(app.outdir, '_static', f)
+        if not exists(dirname(dest)):
+            os.makedirs(dirname(dest))
         copyfile(src, dest)
 
 
@@ -69,7 +69,6 @@ def setup(app):
     app.add_javascript('https://cdnjs.cloudflare.com/ajax/libs/lunr.js/0.6.0/lunr.min.js')
     app.add_stylesheet('css/searchbox.css')
     app.add_javascript('js/searchbox.js')
-
 
     app.connect('builder-inited', builder_inited)
     app.connect('build-finished', copy_static_files)

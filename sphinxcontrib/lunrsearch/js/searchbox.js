@@ -74,17 +74,18 @@ var searchModule = (function ($, lunr, Search, DOCUMENTATION_OPTIONS) {
         }
 
         results = index.search(query);
-        ul.show();
+        ul.empty().show();
 
         if (results.length === 0) {
-            ul.empty().append($('<li><a href="#">No results found</a></li>'));
-            return;
+            ul.append($('<li><a href="#">No results found</a></li>'));
+        } else {
+            for (i = 0; i < Math.min(results.length, 5); i += 1) {
+                ul.append(createResultListElement(store[results[i].ref]));
+            }
         }
 
-        ul.empty();
-        for (i = 0; i < Math.min(results.length, 5); i += 1) {
-            ul.append(createResultListElement(store[results[i].ref]));
-        }
+        // set the width of the dropdown so that it contains all of the
+        // list elements
         ul.width(Math.max(
             $('#ls_search-field').outerWidth(),
             Math.max.apply(null, ul.children().map(function(i, o) {

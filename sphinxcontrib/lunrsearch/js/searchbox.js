@@ -120,7 +120,7 @@ var searchModule = (function ($, lunr, Search, DOCUMENTATION_OPTIONS) {
         return DOCUMENTATION_OPTIONS.URL_ROOT + s.filename +
                DOCUMENTATION_OPTIONS.FILE_SUFFIX +
                highlightstring +
-               '#' + s.prefix + '.' + s.name;
+               '#' + s.shortanchor;
     } // end buildHref
 
     function createResultListElement(s) {

@@ -1,6 +1,7 @@
 import os
 from os.path import dirname, join, exists
 import json
+import warnings
 import itertools
 
 from six import iteritems
@@ -14,23 +15,28 @@ class IndexBuilder(sphinx.search.IndexBuilder):
         """Create a usable data structure for serializing."""
         data = super(IndexBuilder, self).freeze()
 
-        filenames, titles = zip(*sorted(self._titles.items()))
-        fn2index = dict((f, i) for (i, f) in enumerate(filenames))
-
-        objects = self.get_objects(fn2index)  # populates _objtypes
-        objtypes = dict((v, k[0] + ':' + k[1])
-                        for (k, v) in iteritems(self._objtypes))
-
         store = {}
         c = itertools.count()
-        for prefix, items in iteritems(objects):
-            for name, (index, typeindex, _, _) in iteritems(items):
+        for prefix, items in iteritems(data['objects']):
+            for name, (index, typeindex, _, shortanchor) in iteritems(items):
+                objtype = data['objtypes'][typeindex]
+                if objtype.startswith('cpp:'):
+                    split =  name.rsplit('::', 1)
+                    if len(split) != 2:
+                        warnings.warn("What's up with %s?" % str((prefix, name, objtype)))
+                        continue
+                    prefix, name = split
+                    last_prefix = prefix.split('::')[-1]
+                else:
+                    last_prefix = prefix.split('.')[-1]
+
                 store[next(c)] = {
-                    'filename': filenames[index],
-                    'objtype': objtypes[typeindex],
+                    'filename': data['filenames'][index],
+                    'objtype': objtype,
                     'prefix': prefix,
-                    'last_prefix': prefix.split('.')[-1],
+                    'last_prefix': last_prefix,
                     'name': name,
+                    'shortanchor': shortanchor,
                 }
 
         data.update({'store': store})

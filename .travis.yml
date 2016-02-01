@@ -6,7 +6,10 @@ services:
 env:
   global:
     - A=B
+    - secure: "Cx3e3YpRftMjJ1QLA7uU+tvHXV9dqv57p+OS2GcXHqO/CV0h4iQyjAxCqhaBzAWlCl+vwfnF7xC9sTEruciFmS3sWAs7rSnvkEhrFSBobLJlf5vyDSPkFTyXmRgvU4AarQBdf0w120OqKnaNQTTuxnB5j7jRJCMjAedrd9q9wY/Cf9hS1TMqKtuaDyUxSzROH5Wv4bH/Qn0kciW+2CYICNy5or8jd0etdxFDz/uITOFslYT2pltqa3yWxQz1j2C9HVuems672rHI/YtGpXM7l3UD6rCmW8w62B8LH/qXdBpFQGulwzOJAyJQCOtYYCc34MXSq3UAqxK08MkOn94I72ytEDl/yl3Za19rHga4rbzm5lwzINHZ+f7350/tklVIyZt1WVvsfkG61m4GlSnrzTLTWKz7d19ZSG3z8eaQCt8XwI/5WJZtpVOX6rqA8hZT4Efp96Rao6NYdtwlIEfKfeYAhYqFihzKUWMW02pudnlhbU2xdZX1LmULk0usach1E8NYGlvfSYqQeyQGRtO1mzGrmkRth0trj53Gt+RpZ7qpmUWPQl9dxMOvFSgw9zlhJM/RQKBT933/1M05cfgWYJXU3m41+nUCLx9eGokFpStM1KBDAUhXCDW7AIJq0VrKI0tFETMSYXb++xxMH41ve+oNfJrZNwSnkNf8AQ7Fu5U="
 
+script:
+  - echo hello
 
 deploy:
   provider: script

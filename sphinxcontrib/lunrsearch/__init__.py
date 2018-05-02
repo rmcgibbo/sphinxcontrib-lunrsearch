@@ -14,6 +14,13 @@ class IndexBuilder(sphinx.search.IndexBuilder):
     def freeze(self):
         """Create a usable data structure for serializing."""
         data = super(IndexBuilder, self).freeze()
+        try:
+            # Sphinx >= 1.5 format
+            # Due to changes from github.com/sphinx-doc/sphinx/pull/2454
+            base_file_names = data['docnames']
+        except KeyError:
+            # Sphinx < 1.5 format
+            base_file_names = data['filenames']
 
         store = {}
         c = itertools.count()
@@ -31,7 +38,7 @@ class IndexBuilder(sphinx.search.IndexBuilder):
                     last_prefix = prefix.split('.')[-1]
 
                 store[next(c)] = {
-                    'filename': data['filenames'][index],
+                    'filename': base_file_names[index],
                     'objtype': objtype,
                     'prefix': prefix,
                     'last_prefix': last_prefix,

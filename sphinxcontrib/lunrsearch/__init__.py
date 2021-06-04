@@ -80,9 +80,9 @@ def copy_static_files(app, _):
 def setup(app):
     # adds <script> and <link> to each of the generated pages to load these
     # files.
-    app.add_javascript('https://cdnjs.cloudflare.com/ajax/libs/lunr.js/0.6.0/lunr.min.js')
-    app.add_stylesheet('css/searchbox.css')
-    app.add_javascript('js/searchbox.js')
+    app.add_js_file('https://cdnjs.cloudflare.com/ajax/libs/lunr.js/0.6.0/lunr.min.js')
+    app.add_css_file('css/searchbox.css')
+    app.add_js_file('js/searchbox.js')
 
     app.connect('builder-inited', builder_inited)
     app.connect('build-finished', copy_static_files)

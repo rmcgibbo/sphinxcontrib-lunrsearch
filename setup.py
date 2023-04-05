@@ -20,6 +20,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Environment :: Web Environment',
+        'Framework :: Sphinx :: Extension',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
